@@ -1,6 +1,6 @@
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
-        const apiUrl = '';
+        const apiUrl = 'http://localhost:5000/';
         const hiddenClass = 'hidden';
 
         const getById = (id) => {
@@ -45,6 +45,7 @@
             $secondTextDiv.innerHTML = text;
         };
 
+
         const showInput = () => {
             $inputDiv.classList.remove(hiddenClass);
         };
@@ -74,7 +75,7 @@
         }
 
         const displayMarkedText = (firstCommonList, secondCommonList) => {
-            for (let idx = 0; idx <= firstCommonList.length; idx++) {
+            for (let idx = 0; idx < firstCommonList.length; idx++) {
                 let color = getRandomColor();
 
                 let [firstStartPos, firstEndPos] = firstCommonList[idx];
@@ -86,11 +87,11 @@
                 let firstTextFragment = getFirstText().substr(firstStartPos, firstEndPos - firstStartPos);
                 let secondTextFragment = getSecondText().substr(secondStartPos, secondEndPos - secondStartPos);
 
-                firstDisplayDivHTML.replace(
+                $firstTextDiv.innerHTML = firstDisplayDivHTML.replace(
                     firstTextFragment,
                     `<span style="color: ${color}">${firstTextFragment}</span>`
                 );
-                secondDisplayDivHTML.replace(
+                $secondTextDiv.innerHTML = secondDisplayDivHTML.replace(
                     secondTextFragment,
                     `<span style="color: ${color}">${secondTextFragment}</span>`
                 );
@@ -107,11 +108,11 @@
             })
                 .then(res => res.json())
                 .then(data => {
-                    let {firstCommonList, secondCommonList} = data;
+                    let {firstCommon, secondCommon} = data;
                     hideInput();
                     fillFirstDisplay(getFirstText());
                     fillSecondDisplay(getSecondText());
-                    displayMarkedText(firstCommonList, secondCommonList);
+                    displayMarkedText(firstCommon, secondCommon);
                     showDisplay();
                 })
         };
@@ -137,22 +138,36 @@
     <div class="textarea" id="firstTextDisplay"></div>
     <div class="textarea" id="secondTextDisplay"></div>
 </div>
-<div>
-    <button id="compareTextsBtn" class="btn">Compare</button><br>
+<div class="row">
+    <button id="compareTextsBtn" class="btn">Compare</button>
+    <br>
     <button id="cleanUpBtn" class="btn">Type new text</button>
 </div>
 </body>
 <style>
-    .textarea {
-        height: 80vh;
-        width: 80vh;
-        font-size: 16px;
+    .row {
+        float: left;
+        width: 100%;
     }
+
+    .textarea {
+        float: left;
+        position: Relative;
+        display: inline;
+        height: 60vh;
+        width: 40vh;
+        font-size: 16px;
+        border: 1px solid #000000;
+        border-radius: 1vh;
+    }
+
     .btn {
+        display: table-row;
         height: 5vh;
         width: 80vh;
         background-color: #0b93d5;
     }
+
     .hidden {
         display: none;
     }
