@@ -1,15 +1,10 @@
 import json
-import os
 
 from app import app
 from flask import render_template, request, jsonify
 
 from plataurus.match import get_clear_matches
-from app.constants import FLASK_HOSTNAME, FLASK_PORT
-
-
-HOSTNAME = os.getenv('FLASK_HOSTNAME', FLASK_HOSTNAME)
-PORT = os.getenv('FLASK_PORT', FLASK_PORT)
+from app.constants import FIRST_TEXT, SECOND_TEXT
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -19,4 +14,4 @@ def index():
         first_matches, second_matches = get_clear_matches(data['firstText'], data['secondText'])
         return jsonify({"firstCommon": first_matches,
                         "secondCommon": second_matches})
-    return render_template('index.html', host=HOSTNAME, port=PORT)
+    return render_template('index.html', first_text=FIRST_TEXT, second_text=SECOND_TEXT)
