@@ -13,4 +13,4 @@ def index():
         first_matches, second_matches = get_clear_matches(data['firstText'], data['secondText'])
         return jsonify({"firstCommon": first_matches,
                         "secondCommon": second_matches})
-    return render_template('index.html')
+    return render_template('index.html', host=HOSTNAME, port=PORT)
