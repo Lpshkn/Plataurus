@@ -11,13 +11,11 @@
             const colors = ['#f37777', '#a98cff', '#86ff86', '#ff9aff',
                 '#fcc87c', '#78fafa'];
 
-            const randomColorIdx = getRandomInt(0, colors.length + 1);
+            const randomColorIdx = getRandomInt(0, colors.length-1);
             return colors[randomColorIdx];
         }
 
         function getRandomInt(min, max) {
-            min = Math.ceil(min)
-            max = Math.floor(max)
             return Math.floor(Math.random() * (max - min + 1) + min)
         }
 
