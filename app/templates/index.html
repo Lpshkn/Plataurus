@@ -1,6 +1,6 @@
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", () => {
-        const apiUrl = 'http://{{ host }}:{{ port }}/';
+        const apiUrl = '/';
         const hiddenClass = 'hidden';
 
         const getById = (id) => {
@@ -134,8 +134,8 @@
 </script>
 <body>
 <div id="inputDiv">
-    <textarea class="textarea" id="firstText"></textarea>
-    <textarea class="textarea" id="secondText"></textarea>
+    <textarea class="textarea" id="firstText">{{ first_text }}</textarea>
+    <textarea class="textarea" id="secondText">{{ second_text }}</textarea>
 </div>
 <div id="displayDiv" class="hidden">
     <div class="textarea" id="firstTextDisplay"></div>
