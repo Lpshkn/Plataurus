@@ -17,8 +17,10 @@ def get_env_value(key: str, default=None):
     ----------
     key : string
         The name of a variable that should be get from the environment.
+
     default : any
         A default value that will be returned if the variable wasn't get from the environment.
+
     Return
     ------
     variable : any
@@ -30,6 +32,6 @@ def get_env_value(key: str, default=None):
             logger.info(f'For the key "{key}" will be used the default value: "{value}"')
         else:
             value = None
-            logger.info(f'Key "{key}" has not default and environment values')
+            logger.warning(f'Key "{key}" has not default and environment values')
 
     return value
