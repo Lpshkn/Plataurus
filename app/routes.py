@@ -1,9 +1,15 @@
 import json
+import os
 
 from app import app
 from flask import render_template, request, jsonify
 
 from plataurus.match import get_clear_matches
+from app.constants import FLASK_HOSTNAME, FLASK_PORT
+
+
+HOSTNAME = os.getenv('FLASK_HOSTNAME', FLASK_HOSTNAME)
+PORT = os.getenv('FLASK_PORT', FLASK_PORT)
 
 
 @app.route('/', methods=['POST', 'GET'])
