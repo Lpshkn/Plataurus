@@ -8,12 +8,17 @@
         };
 
         function getRandomColor() {
-            let letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
+            const colors = ['#A60000', '#200772', '#008500', '#6C006C',
+                '#A65F00', '#006363'];
+
+            const randomColorIdx = getRandomInt(0, colors.length + 1);
+            return colors[randomColorIdx];
+        }
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min)
+            max = Math.floor(max)
+            return Math.floor(Math.random() * (max - min + 1) + min)
         }
 
         const $inputDiv = getById('inputDiv');
