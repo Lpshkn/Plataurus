@@ -21,8 +21,12 @@ STOPWORDS = re.compile(rf"\b({'|'.join(list(SWORDS_LITE))})\b", re.IGNORECASE)
 
 
 def process_sentence(morph: Morph, sentence: str):
+    sentence = sentence.lower()
+    sentence = re.sub(r'[\s]+', r' ', sentence).strip()
+    sentence = re.sub(r'[^a-zа-яё -]', '', sentence)
+
     pymorph = MorphAnalyzer()
-    tokens = [[_.text.lower() for _ in tokenize(sentence)]]
+    tokens = [[_.text for _ in tokenize(sentence) if _.text not in SWORDS_LITE]]
 
     markup = next(morph.map(tokens))
     words = []
