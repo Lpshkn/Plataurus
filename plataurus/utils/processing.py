@@ -31,9 +31,8 @@ def process_sentence(morph: Morph, sentence: str):
     markup = next(morph.map(tokens))
     words = []
     for token in markup.tokens:
-        if token.pos == 'NOUN':
-            word = token.text.lower()
-            parsed_word = pymorph.parse(word)[0].normal_form
-            words.append(parsed_word)
+        word = token.text
+        parsed_word = pymorph.parse(word)[0].normal_form
+        words.append(parsed_word)
 
     return " ".join(words)
