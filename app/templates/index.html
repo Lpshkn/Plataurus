@@ -11,7 +11,7 @@
             const colors = ['#f37777', '#a98cff', '#86ff86', '#ff9aff',
                 '#fcc87c', '#78fafa'];
 
-            const randomColorIdx = getRandomInt(0, colors.length-1);
+            const randomColorIdx = getRandomInt(0, colors.length - 1);
             return colors[randomColorIdx];
         }
 
@@ -31,6 +31,7 @@
         const $compareTextsBtn = getById('compareTextsBtn');
         const $cleanUpBtn = getById('cleanUpBtn');
 
+        const $rangeSlider = getById('range');
 
         const hideInput = () => {
             $inputDiv.classList.add(hiddenClass);
@@ -64,6 +65,10 @@
 
         const getSecondText = () => {
             return $secondTextArea.value;
+        };
+
+        const getRangeSliderValue = () => {
+            return parseInt($rangeSlider.value) / 100;
         };
 
         const cleanInputs = () => {
@@ -106,7 +111,8 @@
                 method: 'POST',
                 body: JSON.stringify({
                     firstText: getFirstText(),
-                    secondText: getSecondText()
+                    secondText: getSecondText(),
+                    rangeValue: getRangeSliderValue(),
                 })
             })
                 .then(res => res.json())
@@ -130,25 +136,35 @@
             hideDisplay();
             showInput();
         };
+
+        $rangeSlider.onchange = () => {
+            const rangeValue = getRangeSliderValue();
+            getById('sliderValue').innerHTML = 'Value: ' + rangeValue;
+        };
     });
 </script>
 <body>
 <div id="inputDiv">
-    <textarea class="textarea" id="firstText">{{ first_text }}</textarea>
-    <textarea class="textarea" id="secondText">{{ second_text }}</textarea>
+    <textarea className="textarea" id="firstText">{{ first_text }}</textarea>
+    <textarea className="textarea" id="secondText">{{ second_text }}</textarea>
 </div>
-<div id="displayDiv" class="hidden">
-    <div class="textarea" id="firstTextDisplay"></div>
-    <div class="textarea" id="secondTextDisplay"></div>
+<div id="displayDiv" className="hidden">
+    <div className="textarea" id="firstTextDisplay"></div>
+    <div className="textarea" id="secondTextDisplay"></div>
 </div>
-<div class="row">
-    <button id="compareTextsBtn" class="btn">Compare</button>
+<div className="row">
+    <button id="compareTextsBtn" className="btn">Compare</button>
     <br>
-    <button id="cleanUpBtn" class="btn">Type new text</button>
+    <button id="cleanUpBtn" className="btn">Type new text</button>
+    <br>
+    <div className="slide-container">
+        <div id="sliderValue">Value: 0.5</div>
+        <input type="range" min="0" max="100" value="50" className="slider" id="range">
+    </div>
 </div>
 </body>
 <style>
-    * {
+    body {
         font: normal small-caps 100% fantasy;
     }
 
@@ -177,5 +193,45 @@
 
     .hidden {
         display: none;
+    }
+
+    /** Slider **/
+    .slide-container {
+        width: 100%; /* Width of the outside container */
+    }
+
+    /* The slider itself */
+    .slider {
+        -webkit-appearance: none; /* Override default CSS styles */
+        appearance: none;
+        height: 25px;
+        width: 80vh;
+        background: #d3d3d3; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+    }
+
+    /* Mouse-over effects */
+    .slider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+    }
+
+    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #0b93d5; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #0b93d5; /* Green background */
+        cursor: pointer; /* Cursor on hover */
     }
 </style>
