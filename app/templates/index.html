@@ -1,237 +1,240 @@
-<script type="application/javascript">
-    document.addEventListener("DOMContentLoaded", () => {
-        const apiUrl = '/';
-        const hiddenClass = 'hidden';
-
-        const getById = (id) => {
-            return document.getElementById(id);
-        };
-
-        function getRandomColor() {
-            const colors = ['#f37777', '#a98cff', '#86ff86', '#ff9aff',
-                '#fcc87c', '#78fafa'];
-
-            const randomColorIdx = getRandomInt(0, colors.length - 1);
-            return colors[randomColorIdx];
+<head>
+    <style>
+        body {
+            font: normal small-caps 100% fantasy;
         }
 
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min + 1) + min)
+        .row {
+            float: left;
+            width: 100%;
         }
 
-        const $inputDiv = getById('inputDiv');
-        const $displayDiv = getById('displayDiv');
-
-        const $firstTextArea = getById('firstText');
-        const $secondTextArea = getById('secondText');
-
-        const $firstTextDiv = getById('firstTextDisplay');
-        const $secondTextDiv = getById('secondTextDisplay');
-
-        const $compareTextsBtn = getById('compareTextsBtn');
-        const $cleanUpBtn = getById('cleanUpBtn');
-
-        const $rangeSlider = getById('range');
-
-        const hideInput = () => {
-            $inputDiv.classList.add(hiddenClass);
-        };
-
-        const hideDisplay = () => {
-            $displayDiv.classList.add(hiddenClass);
-        };
-
-        const fillFirstDisplay = (text) => {
-            $firstTextDiv.innerHTML = text;
-        };
-
-        const fillSecondDisplay = (text) => {
-            $secondTextDiv.innerHTML = text;
-        };
-
-
-        const showInput = () => {
-            $inputDiv.classList.remove(hiddenClass);
-        };
-
-        const showDisplay = () => {
-            $displayDiv.classList.remove(hiddenClass);
-        };
-
-
-        const getFirstText = () => {
-            return $firstTextArea.value;
-        };
-
-        const getSecondText = () => {
-            return $secondTextArea.value;
-        };
-
-        const getRangeSliderValue = () => {
-            return parseInt($rangeSlider.value) / 100;
-        };
-
-        const cleanInputs = () => {
-            $firstTextArea.value = '';
-            $secondTextArea.value = '';
+        .textarea {
+            float: left;
+            position: Relative;
+            display: inline;
+            height: 60vh;
+            width: 40vh;
+            font-size: 16px;
+            border: 1px solid #000000;
+            border-radius: 1vh;
         }
 
-
-        const cleanDisplayDivs = () => {
-            $firstTextDiv.innerHTML = '';
-            $secondTextDiv.innerHTML = '';
+        .btn {
+            display: table-row;
+            height: 5vh;
+            width: 80vh;
+            background-color: #0b93d5;
         }
 
-        const displayMarkedText = (firstCommonList, secondCommonList) => {
-            for (let idx = 0; idx < firstCommonList.length; idx++) {
-                let color = getRandomColor();
+        .hidden {
+            display: none;
+        }
 
-                let [firstStartPos, firstEndPos] = firstCommonList[idx];
-                let [secondStartPos, secondEndPos] = secondCommonList[idx];
+        /** Slider **/
+        .slide-container {
+            width: 100%; /* Width of the outside container */
+        }
 
-                let firstDisplayDivHTML = $firstTextDiv.innerHTML;
-                let secondDisplayDivHTML = $secondTextDiv.innerHTML;
+        /* The slider itself */
+        .slider {
+            -webkit-appearance: none;  /* Override default CSS styles */
+            appearance: none;
+            height: 25px;
+            width: 80vh;
+            background: #d3d3d3; /* Grey background */
+            outline: none; /* Remove outline */
+            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+        }
 
-                let firstTextFragment = getFirstText().substr(firstStartPos, firstEndPos - firstStartPos);
-                let secondTextFragment = getSecondText().substr(secondStartPos, secondEndPos - secondStartPos);
+        /* Mouse-over effects */
+        .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+        }
 
-                $firstTextDiv.innerHTML = firstDisplayDivHTML.replace(
-                    firstTextFragment,
-                    `<span style="background-color: ${color}">${firstTextFragment}</span>`
-                );
-                $secondTextDiv.innerHTML = secondDisplayDivHTML.replace(
-                    secondTextFragment,
-                    `<span style="background-color: ${color}">${secondTextFragment}</span>`
-                );
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Override default look */
+            appearance: none;
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #0b93d5; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #0b93d5; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+        }
+    </style>
+    <script type="application/javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            const apiUrl = '/';
+            const hiddenClass = 'hidden';
+
+            const getById = (id) => {
+                return document.getElementById(id);
+            };
+
+            function getRandomColor() {
+                const colors = ['#f37777', '#a98cff', '#86ff86', '#ff9aff',
+                    '#fcc87c', '#78fafa'];
+
+                const randomColorIdx = getRandomInt(0, colors.length-1);
+                return colors[randomColorIdx];
             }
-        };
 
-        const compareTexts = () => {
-            fetch(apiUrl, {
-                method: 'POST',
-                body: JSON.stringify({
-                    firstText: getFirstText(),
-                    secondText: getSecondText(),
-                    rangeValue: getRangeSliderValue(),
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1) + min)
+            }
+
+            const $inputDiv = getById('inputDiv');
+            const $displayDiv = getById('displayDiv');
+
+            const $firstTextArea = getById('firstText');
+            const $secondTextArea = getById('secondText');
+
+            const $firstTextDiv = getById('firstTextDisplay');
+            const $secondTextDiv = getById('secondTextDisplay');
+
+            const $compareTextsBtn = getById('compareTextsBtn');
+            const $cleanUpBtn = getById('cleanUpBtn');
+
+            const $rangeSlider = getById('range');
+
+            const hideInput = () => {
+                $inputDiv.classList.add(hiddenClass);
+            };
+
+            const hideDisplay = () => {
+                $displayDiv.classList.add(hiddenClass);
+            };
+
+            const fillFirstDisplay = (text) => {
+                $firstTextDiv.innerHTML = text;
+            };
+
+            const fillSecondDisplay = (text) => {
+                $secondTextDiv.innerHTML = text;
+            };
+
+
+            const showInput = () => {
+                $inputDiv.classList.remove(hiddenClass);
+            };
+
+            const showDisplay = () => {
+                $displayDiv.classList.remove(hiddenClass);
+            };
+
+
+            const getFirstText = () => {
+                return $firstTextArea.value;
+            };
+
+            const getSecondText = () => {
+                return $secondTextArea.value;
+            };
+
+            const getRangeSliderValue = () => {
+                return parseInt($rangeSlider.value) / 100;
+            };
+
+            const cleanInputs = () => {
+                $firstTextArea.value = '';
+                $secondTextArea.value = '';
+            }
+
+
+            const cleanDisplayDivs = () => {
+                $firstTextDiv.innerHTML = '';
+                $secondTextDiv.innerHTML = '';
+            }
+
+            const displayMarkedText = (firstCommonList, secondCommonList) => {
+                for (let idx = 0; idx < firstCommonList.length; idx++) {
+                    let color = getRandomColor();
+
+                    let [firstStartPos, firstEndPos] = firstCommonList[idx];
+                    let [secondStartPos, secondEndPos] = secondCommonList[idx];
+
+                    let firstDisplayDivHTML = $firstTextDiv.innerHTML;
+                    let secondDisplayDivHTML = $secondTextDiv.innerHTML;
+
+                    let firstTextFragment = getFirstText().substr(firstStartPos, firstEndPos - firstStartPos);
+                    let secondTextFragment = getSecondText().substr(secondStartPos, secondEndPos - secondStartPos);
+
+                    $firstTextDiv.innerHTML = firstDisplayDivHTML.replace(
+                        firstTextFragment,
+                        `<span style="background-color: ${color}">${firstTextFragment}</span>`
+                    );
+                    $secondTextDiv.innerHTML = secondDisplayDivHTML.replace(
+                        secondTextFragment,
+                        `<span style="background-color: ${color}">${secondTextFragment}</span>`
+                    );
+                }
+            };
+
+            const compareTexts = () => {
+                fetch(apiUrl, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        firstText: getFirstText(),
+                        secondText: getSecondText(),
+                        rangeValue: getRangeSliderValue(),
+                    })
                 })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    let {firstCommon, secondCommon} = data;
-                    hideInput();
-                    fillFirstDisplay(getFirstText());
-                    fillSecondDisplay(getSecondText());
-                    displayMarkedText(firstCommon, secondCommon);
-                    showDisplay();
-                })
-        };
+                    .then(res => res.json())
+                    .then(data => {
+                        let {firstCommon, secondCommon} = data;
+                        hideInput();
+                        fillFirstDisplay(getFirstText());
+                        fillSecondDisplay(getSecondText());
+                        displayMarkedText(firstCommon, secondCommon);
+                        showDisplay();
+                    })
+            };
 
-        $compareTextsBtn.onclick = () => {
-            compareTexts();
-        };
+            $compareTextsBtn.onclick = () => {
+                compareTexts();
+            };
 
-        $cleanUpBtn.onclick = () => {
-            cleanInputs();
-            cleanDisplayDivs();
-            hideDisplay();
-            showInput();
-        };
+            $cleanUpBtn.onclick = () => {
+                cleanInputs();
+                cleanDisplayDivs();
+                hideDisplay();
+                showInput();
+            };
 
-        $rangeSlider.onchange = () => {
-            const rangeValue = getRangeSliderValue();
-            getById('sliderValue').innerHTML = 'Value: ' + rangeValue;
-        };
-    });
-</script>
+            $rangeSlider.onchange = () => {
+                const rangeValue = getRangeSliderValue();
+                getById('sliderValue').innerHTML = 'Value: ' + rangeValue;
+            };
+        });
+    </script>
+    <title>Plataurus</title>
+</head>
 <body>
 <div id="inputDiv">
-    <textarea className="textarea" id="firstText">{{ first_text }}</textarea>
-    <textarea className="textarea" id="secondText">{{ second_text }}</textarea>
+    <textarea class="textarea" id="firstText">{{ first_text }}</textarea>
+    <textarea class="textarea" id="secondText">{{ second_text }}</textarea>
 </div>
-<div id="displayDiv" className="hidden">
-    <div className="textarea" id="firstTextDisplay"></div>
-    <div className="textarea" id="secondTextDisplay"></div>
+<div id="displayDiv" class="hidden">
+    <div class="textarea" id="firstTextDisplay"></div>
+    <div class="textarea" id="secondTextDisplay"></div>
 </div>
-<div className="row">
-    <button id="compareTextsBtn" className="btn">Compare</button>
+<div class="row">
+    <button id="compareTextsBtn" class="btn">Compare</button>
     <br>
-    <button id="cleanUpBtn" className="btn">Type new text</button>
+    <button id="cleanUpBtn" class="btn">Type new text</button>
     <br>
-    <div className="slide-container">
+    <div class="slide-container">
         <div id="sliderValue">Value: 0.5</div>
-        <input type="range" min="0" max="100" value="50" className="slider" id="range">
+        <input type="range" min="0" max="100" value="50" class="slider" id="range">
     </div>
 </div>
 </body>
-<style>
-    body {
-        font: normal small-caps 100% fantasy;
-    }
-
-    .row {
-        float: left;
-        width: 100%;
-    }
-
-    .textarea {
-        float: left;
-        position: Relative;
-        display: inline;
-        height: 60vh;
-        width: 40vh;
-        font-size: 16px;
-        border: 1px solid #000000;
-        border-radius: 1vh;
-    }
-
-    .btn {
-        display: table-row;
-        height: 5vh;
-        width: 80vh;
-        background-color: #0b93d5;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    /** Slider **/
-    .slide-container {
-        width: 100%; /* Width of the outside container */
-    }
-
-    /* The slider itself */
-    .slider {
-        -webkit-appearance: none; /* Override default CSS styles */
-        appearance: none;
-        height: 25px;
-        width: 80vh;
-        background: #d3d3d3; /* Grey background */
-        outline: none; /* Remove outline */
-        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-        transition: opacity .2s;
-    }
-
-    /* Mouse-over effects */
-    .slider:hover {
-        opacity: 1; /* Fully shown on mouse-over */
-    }
-
-    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-    .slider::-webkit-slider-thumb {
-        -webkit-appearance: none; /* Override default look */
-        appearance: none;
-        width: 25px; /* Set a specific slider handle width */
-        height: 25px; /* Slider handle height */
-        background: #0b93d5; /* Green background */
-        cursor: pointer; /* Cursor on hover */
-    }
-
-    .slider::-moz-range-thumb {
-        width: 25px; /* Set a specific slider handle width */
-        height: 25px; /* Slider handle height */
-        background: #0b93d5; /* Green background */
-        cursor: pointer; /* Cursor on hover */
-    }
-</style>
