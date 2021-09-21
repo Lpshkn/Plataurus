@@ -37,7 +37,7 @@ def get_clear_matches(first_text, second_text) -> tuple:
     return tuple(first_matches), tuple(second_matches)
 
 
-def get_matches(first_text, second_text, threshold=1) -> tuple:
+def get_matches(first_text, second_text, threshold=0.6) -> tuple:
     """
 
     Parameters
