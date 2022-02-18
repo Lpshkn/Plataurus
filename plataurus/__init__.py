@@ -1,7 +1,7 @@
 """
 The project for identifying authors and detecting plagiarism of russian texts.
 """
-__package_name__ = "Plataurus"
+__package_name__ = "plataurus"
 __version__ = "0.1.0"
 __url__ = "https://github.com/Lpshkn/Plataurus"
 
