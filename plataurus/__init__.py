@@ -1,3 +1,6 @@
+"""
+The project for identifying authors and detecting plagiarism of russian texts.
+"""
 __package_name__ = "Plataurus"
 __version__ = "0.1.0"
 
