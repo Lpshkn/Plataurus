@@ -31,7 +31,7 @@ setup(
     extras_require={'dev': load_requirements('requirements.dev.txt')},
     entry_points={
         'console_scripts': [
-            '{0}-app = {0}.__main__:main'.format(__package_name__),
+            '{0}-web = {0}.api.__main__:main'.format(__package_name__),
         ]
     },
     include_package_data=True
