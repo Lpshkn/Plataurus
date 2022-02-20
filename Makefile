@@ -5,7 +5,13 @@ COMPOSE := env docker-compose
 DATA_DIR := data
 
 help:
+	@echo "Run:"
+	@echo "make run-prod                   - Run app in the production mode"
+	@echo
+	@echo "Developing:"
+	@echo "make preload-data               - Load data for morphological analysis"
 	@exit 0
+
 
 # Data preloading
 preload-data:
@@ -13,4 +19,5 @@ preload-data:
 	[ -f $(DATA_DIR)/slovnet_morph_news_v1.tar ] || wget https://storage.yandexcloud.net/natasha-slovnet/packs/slovnet_morph_news_v1.tar -P $(DATA_DIR)
 
 run-prod:
-	@echo "run-prod coming soon"
+	$(COMPOSE) build
+	$(COMPOSE) up -d
