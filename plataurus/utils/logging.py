@@ -1,10 +1,10 @@
 import logging
 import sys
 
-FORMAT_DEFAULT = f"%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
+from plataurus.settings import Config
 
 
-def get_file_handler(filename: str, level=logging.INFO, fmt=FORMAT_DEFAULT) -> logging.FileHandler:
+def get_file_handler(filename: str, level=logging.INFO, fmt=Config.Logging.format) -> logging.FileHandler:
     """
     Get a FileHandler to set it further as handler in the getLogger function of the logging module.
     Parameters
@@ -27,7 +27,7 @@ def get_file_handler(filename: str, level=logging.INFO, fmt=FORMAT_DEFAULT) -> l
     return file_handler
 
 
-def get_stream_handler(stream=sys.stdout, level=logging.INFO, fmt=FORMAT_DEFAULT) -> logging.StreamHandler:
+def get_stream_handler(stream=sys.stdout, level=logging.INFO, fmt=Config.Logging.format) -> logging.StreamHandler:
     """
     Get a StreamHandler to set it further as handler in the getLogger function of the logging module.
     Parameters
