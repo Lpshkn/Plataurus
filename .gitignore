@@ -17,6 +17,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+data/
 lib64/
 parts/
 sdist/
@@ -78,6 +79,9 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+
+# Tar archives
+*.tar
 
 # IPython
 profile_default/
