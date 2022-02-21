@@ -1,16 +1,17 @@
 import numpy as np
+import os
+
 from razdel import sentenize
 from navec import Navec
 from slovnet import Morph
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.spatial.distance import cosine
 
-import plataurus.constants as constants
+from plataurus.settings import Config
 from plataurus.utils.processing import process_sentence
-from plataurus.utils.variables import get_env_value
 
-NAVEC = Navec.load(get_env_value('NAVEC_ARCHIVE', constants.NAVEC_ARCHIVE))
-MORPH = Morph.load(get_env_value('MORPH_ARCHIVE', constants.MORPH_ARCHIVE))
+NAVEC = Navec.load(os.getenv('NAVEC_ARCHIVE', Config.navec_archive))
+MORPH = Morph.load(os.getenv('MORPH_ARCHIVE', Config.morph_archive))
 MORPH.navec(NAVEC)
 
 

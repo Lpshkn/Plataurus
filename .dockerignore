@@ -1,2 +1,6 @@
-notebooks
-README.md
+!setup.py
+!plataurus
+!requirements*
+!deploy
+!Makefile
+!MANIFEST.in

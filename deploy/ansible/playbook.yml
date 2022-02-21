@@ -1,0 +1,14 @@
+- hosts: production
+  tasks:
+    - name: Check that a directory exists or make git clone
+      shell: chdir=/server git clone git@github.com:Lpshkn/Plataurus.git || echo
+    - name: Stop previous docker-compose
+      command: chdir=/server/Plataurus docker-compose down
+    - name: Get changes from server
+      command: chdir=/server/Plataurus git pull --all
+    - name: Switch to main branch with app
+      command: chdir=/server/Plataurus git checkout master
+    - name: Run app via docker-compose
+      command: chdir=/server/Plataurus make run-prod
+    - name: Clear outdated containers to free the space
+      command: docker system prune -f
